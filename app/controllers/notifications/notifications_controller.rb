@@ -7,6 +7,11 @@ module Notifications
       @notification_groups = @notifications.group_by { |note| note.created_at.to_date }
     end
 
+    def clean
+      notifications.delete_all
+      redirect_to notifications_path
+    end
+
     private
 
     def notifications
