@@ -11,7 +11,6 @@ class CreateNotifications < ActiveRecord::Migration
       t.string :third_ancestry_type
       t.integer :third_ancestry_id
       t.datetime :read_at
-
       t.timestamps null: false
     end
 

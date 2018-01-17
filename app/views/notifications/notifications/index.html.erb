@@ -1,14 +1,14 @@
 <div class="notifications">
   <div class="notifications-heading">
-    <div class="title">所有通知</div>
+    <div class="title"><%= t("notifications.all_notifications") %></div>
     <div class="delete">
-      <%= link_to "清空", clean_notifications_path, class: "btn btn-sm btn-danger", method: 'delete' %>
+      <%= link_to raw(t("notifications.clean_all")), clean_notifications_path, class: "btn btn-sm btn-danger", method: 'delete' %>
     </div>
   </div>
 
   <div class="notifications-body">
     <% if @notifications.blank? %>
-        没有通知
+    <%= t("notifications.no_records") %>
     <% else %>
       <% @notification_groups.each do |group, notifications| %>
         <div class="notification-group">

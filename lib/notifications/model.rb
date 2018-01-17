@@ -5,29 +5,29 @@ module Notifications
     extend ActiveSupport::Concern
 
     included do
+      # define belongs_to relationships
       belongs_to :subject, class_name: Notifications.config.object_class
       belongs_to :target, class_name: Notifications.config.object_class
       belongs_to :ancestry, polymorphic: true
       belongs_to :second_ancestry, polymorphic: true
 
       # define has_many relationships
-      has_many_scope = -> { where(notify_type: Notifications.config.notify_type,
-                            ancestry_type: Notifications.config.ancestry_type,
-                            second_ancestry_type: Notifications.config.second_ancestry_type) }
-
       Object.const_get(Notifications.config.object_class).class_eval do
-        has_many :notifications, has_many_scope, foreign_key: :target_id, dependent: :destroy
+        options = {}
+        config = Notifications.config
+        notify_type = config.notify_type
+        ancestry_type = config.ancestry_type
+        second_ancestry_type = config.second_ancestry_type
+        third_ancestry_type = config.third_ancestry_type
+        options[:notify_type] = notify_type
+        options[:ancestry_type] =  ancestry_type if ancestry_type.present?
+        options[:second_ancestry_type] =  second_ancestry_type if second_ancestry_type..present?
+        options[:third_ancestry_type] =  third_ancestry_type if third_ancestry_type.present?
+        has_many :notifications, -> { where(options) }, foreign_key: :target_id, dependent: :destroy
         has_many :subjects, through: :notifications
       end
 
-      Object.const_get(Notifications.config.ancestry_type).class_eval do
-        has_many :notifications, has_many_scope, foreign_key: :ancestry_id, dependent: :destroy
-      end
-
-      Object.const_get(Notifications.config.second_ancestry_type).class_eval do
-        has_many :notifications, has_many_scope, foreign_key: :second_ancestry_id, dependent: :destroy
-      end
-
+      # define scope
       scope :unread, -> { where(read_at: nil) }
     end
 
