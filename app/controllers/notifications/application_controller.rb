@@ -1,5 +1,8 @@
 module Notifications
   class ApplicationController < ActionController::Base
-    protect_from_forgery with: :exception
+    helper_method :current_user
+
+    alias_method :current_user, Notifications.config.current_user_method.to_sym
+
   end
 end

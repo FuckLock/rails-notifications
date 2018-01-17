@@ -1,0 +1,10 @@
+<div class="notification-group-bottom">
+  <div class="media-left">
+    <% if Notifications.config.user_avatar_method.blank? %>
+      <%= link_to image_tag('notifications.png'), '#', title: "notifications", class: 'user-avatar' %>
+    <% end %>
+  </div>
+  <div class="media-right">
+    <%= render partial: "/notifications/#{notification.notify_type}", locals: { notification: notification } %>
+  </div>
+</div>
