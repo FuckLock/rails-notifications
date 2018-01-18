@@ -3,11 +3,10 @@
     <% if Notifications.config.user_avatar_method.blank? %>
       <%= link_to image_tag('notifications.png'), '#', title: "notifications", class: 'user-avatar' %>
     <% else %>
-      <%= render partial: "/notifications/user_avatar" %>
+      <%= render partial: "/notifications/user_avatar", locals: { notification: notification } %>
     <% end %>
   </div>
   <div class="media-right">
     <%= render partial: "/notifications/#{notification.notify_type}", locals: { notification: notification } %>
   </div>
 </div>
- 
